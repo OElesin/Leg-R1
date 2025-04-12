@@ -1,0 +1,54 @@
+# Default configuration for Legal Reasoning Model
+
+# Model configuration
+model:
+  name: "Qwen/Qwen2.5-7B-Instruct"
+  max_length: 2048
+  temperature: 0.7
+  top_p: 0.9
+  language: "en"  # Options: "en", "de"
+
+# Training configuration
+training:
+  use_lora: true
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  load_in_8bit: false
+  load_in_4bit: true
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 5.0e-6
+  weight_decay: 0.01
+  warmup_ratio: 0.03
+  num_train_epochs: 3
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 500
+  save_total_limit: 3
+  bf16: true
+  fp16: false
+  seed: 42
+
+# Data configuration
+data:
+  train_data_path: "data/train"
+  eval_data_path: "data/validation"
+  test_data_path: "data/test"
+  max_seq_length: 2048
+
+# AWS configuration
+aws:
+  region: "us-east-1"
+  s3_bucket: "legal-reasoning-model-data"
+  s3_prefix: "legal-model"
+  instance_type: "ml.g5.12xlarge"
+  instance_count: 2
+
+# German legal data configuration
+german_legal:
+  use_german_legal_vocab: true
+  s3_bucket: "legal-reasoning-model-data"
+  s3_prefix: "german-legal-data"
+  instance_type: "ml.g5.12xlarge"
+  instance_count: 2

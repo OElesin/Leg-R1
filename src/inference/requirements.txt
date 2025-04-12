@@ -1,0 +1,13 @@
+torch>=2.0.0,<2.1.0
+transformers>=4.28.1
+peft>=0.4.0
+accelerate>=0.20.0
+bitsandbytes>=0.39.0
+optimum>=1.8.0
+onnx>=1.14.0
+onnxruntime>=1.15.0
+numpy>=1.22.0
+scipy>=1.8.0
+scikit-learn>=1.0.0
+boto3>=1.26.0
+sagemaker>=2.130.0

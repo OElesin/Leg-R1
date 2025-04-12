@@ -1,0 +1,74 @@
+# Configuration for SageMaker Hyperscaler training
+
+# AWS configuration
+aws:
+  region: us-east-1
+  s3_bucket: legal-reasoning-model-data
+  s3_prefix: german-legal-model
+  instance_type: ml.g5.8xlarge
+  instance_count: 1
+  use_spot: true
+  max_wait: 36000
+  max_run: 36000
+
+# Model configuration
+model:
+  name: Qwen/Qwen2.5-7B-Instruct
+  language: de
+  max_length: 2048
+  temperature: 0.7
+  top_p: 0.9
+
+# Data configuration
+data:
+  max_seq_length: 2048
+  train_split: 0.9
+  validation_split: 0.1
+  preprocessing:
+    lowercase: false
+    remove_accents: false
+    strip_whitespace: true
+
+# Training configuration
+training:
+  num_train_epochs: 3
+  batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_steps: 100
+  use_lora: true
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_target_modules: "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  fp16: true
+  bf16: false
+
+# Hyperscaler configuration
+hyperscaler:
+  model_parallel_degree: 2
+  tensor_parallel_degree: 2
+  pipeline_parallel_degree: 1
+  microbatches: 4
+  optimize: speed
+  activation_checkpointing: true
+  placement_strategy: cluster
+  shard_optimizer_state: true
+  prescaled_batch: true
+  fast_mode: true
+
+# DeepSpeed configuration
+deepspeed:
+  zero_stage: 3
+  offload_optimizer: true
+  offload_parameters: true
+  overlap_comm: true
+  contiguous_gradients: true
+  sub_group_size: 1e9
+  reduce_bucket_size: 5e8
+  stage3_prefetch_bucket_size: 5e8
+  stage3_param_persistence_threshold: 1e6
+  stage3_max_live_parameters: 1e9
+  stage3_max_reuse_distance: 1e9
+  gather_16bit_weights_on_model_save: true
